@@ -1,0 +1,10 @@
+# Object files
+*.o
+# Binary
+pipex
+# libft archive
+src/libft/libft.a
+# valgrind profiling annotation files
+callgrind.out.*
+massif.out.*
+profile*.txt
