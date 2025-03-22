@@ -27,21 +27,21 @@ int	main(int argc, char *argv[], char *envp[])
 	int	pipefd[2];
 	int	in_status;
 	int	out_status;
-	int	*in_pid;
-	int	*out_pid;
+	int	in_pid;
+	int	out_pid;
 
-	in_pid = NULL;
-	out_pid = NULL;
+	in_pid = 0;
+	out_pid = 0;
 	if (argc < 5)
 		err_exit(EXIT_FAILURE, "usage: minimum 4 arguments\n");
 	if (pipe(pipefd) == -1)
 		err_exit(EXIT_FAILURE, "pipe");
-	if (process_in(argv, envp, pipefd, in_pid) == -1)
+	if (process_in(argv, envp, pipefd, &in_pid) == -1)
 		return (EXIT_FAILURE);
-	if (process_out(argv, envp, pipefd, out_pid) == -1)
+	if (process_out(argv, envp, pipefd, &out_pid) == -1)
 		return (EXIT_FAILURE);
 	close(pipefd[0]);
 	close(pipefd[1]);
-	group_wait(*in_pid, *out_pid, &in_status, &out_status);
+	group_wait(in_pid, out_pid, &in_status, &out_status);
 	return (EXIT_SUCCESS);
 }
