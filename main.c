@@ -12,20 +12,19 @@
 
 #include "src/pipex.h"
 
-int	process_wait(int pid, int *status)
+int	process_wait(int pid)
 {
-	waitpid(pid, status, 0);
-	ft_printf_fd(STDOUT_FILENO, "status = %d/%d\n", *status,
-		WEXITSTATUS(*status));
-	if (!WIFEXITED(*status) || WEXITSTATUS(*status) != EXIT_SUCCESS)
-		return (-1);
+	int	status;
+
+	waitpid(pid, &status, 0);
+	if (!WIFEXITED(status) || WEXITSTATUS(status) != EXIT_SUCCESS)
+		return (WEXITSTATUS(status));
 	return (0);
 }
 
 int	main(int argc, char *argv[], char *envp[])
 {
 	int	pipefd[2];
-	int	in_status;
 	int	out_status;
 	int	in_pid;
 	int	out_pid;
@@ -42,8 +41,9 @@ int	main(int argc, char *argv[], char *envp[])
 		return (EXIT_FAILURE);
 	close(pipefd[0]);
 	close(pipefd[1]);
-	process_wait(in_pid, &in_status);
-	if (process_wait(out_pid, &out_status) != 0)
-		return (EXIT_FAILURE);
+	process_wait(in_pid);
+	out_status = process_wait(out_pid);
+	if (out_status != 0)
+		return (out_status);
 	return (EXIT_SUCCESS);
 }
