@@ -15,7 +15,7 @@
 int	process_wait(int pid, int *status)
 {
 	waitpid(pid, status, 0);
-	if (!WIFEXITED(*status) || WEXITSTATUS(*status) != 0)
+	if (!WIFEXITED(*status) || WEXITSTATUS(*status) != EXIT_SUCCESS)
 		return (-1);
 	return (0);
 }
