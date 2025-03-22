@@ -66,6 +66,7 @@ int					ft_vprintf_fd(va_list args, int fd, const char *format,
 						...);
 int					ft_printf(const char *format, ...);
 int					ft_vprintf(va_list args, const char *format, ...);
+int					ft_printf_fd(int fd, const char *format, ...);
 char				*ft_strchr(const char *s, int c);
 int					ft_putstr_fd(char *str, int fd);
 int					ft_putchr(char c);

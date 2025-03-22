@@ -68,6 +68,19 @@ int	ft_vprintf(va_list args, const char *format, ...)
 	return (ft_vprintf_fd(args, STDOUT_FILENO, format));
 }
 
+int	ft_printf_fd(int fd, const char *format, ...)
+{
+	va_list	args;
+	int		bytes;
+
+	if (!format)
+		return (-1);
+	va_start(args, format);
+	bytes = ft_vprintf_fd(args, fd, format);
+	va_end(args);
+	return (bytes);
+}
+
 int	ft_printf(const char *format, ...)
 {
 	va_list	args;
