@@ -84,7 +84,11 @@ int	redirect_pipe_to_output(char *filename, int flags, int pipefd[2])
 int	process_in(char *argv[], char *envp[], int pipefd[2], int *pid)
 {
 	int	fd;
+	int	pid_fallback;
 
+	pid_fallback = 0;
+	if (pid == NULL)
+		pid = &pid_fallback;
 	*pid = fork();
 	if (*pid == -1)
 	{
@@ -108,7 +112,11 @@ int	process_in(char *argv[], char *envp[], int pipefd[2], int *pid)
 int	process_out(char *argv[], char *envp[], int pipefd[2], int *pid)
 {
 	int	fd;
+	int	pid_fallback;
 
+	pid_fallback = 0;
+	if (pid == NULL)
+		pid = &pid_fallback;
 	*pid = fork();
 	if (*pid == -1)
 	{
