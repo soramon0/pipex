@@ -12,35 +12,39 @@
 
 #include "libft.h"
 
-int	ft_putnbr_hex(unsigned long num, int uppercase)
+int	ft_putnbr_hex(unsigned long num, int uppercase, int fd)
 {
 	char	*hex;
+	int		bytes;
 
 	hex = "0123456789abcdef";
 	if (uppercase == 1)
 		hex = "0123456789ABCDEF";
 	if (num > 15)
-		return (ft_putnbr_hex(num / 16, uppercase) + ft_putchr(hex[num % 16]));
+	{
+		bytes = ft_putnbr_hex(num / 16, uppercase, fd);
+		return (bytes + ft_putchr_fd(hex[num % 16], fd));
+	}
 	else
-		return (ft_putchr(hex[num]));
+		return (ft_putchr_fd(hex[num], fd));
 }
 
-int	ft_putptr(void *num)
+int	ft_putptr(void *num, int fd)
 {
 	if (num == NULL)
-		return (ft_putstr("(nil)"));
-	return (ft_putstr("0x") + ft_putnbr_hex((unsigned long)num, 0));
+		return (ft_putstr_fd("(nil)", fd));
+	return (ft_putstr_fd("0x", fd) + ft_putnbr_hex((unsigned long)num, 0, fd));
 }
 
-int	ft_putunbr(unsigned int n)
+int	ft_putunbr(unsigned int n, int fd)
 {
 	if (n > 9)
-		return (ft_putunbr(n / 10) + ft_putchr(n % 10 + '0'));
+		return (ft_putunbr(n / 10, fd) + ft_putchr_fd(n % 10 + '0', fd));
 	else
-		return (ft_putchr(n + '0'));
+		return (ft_putchr_fd(n + '0', fd));
 }
 
-int	ft_putnbr(int n)
+int	ft_putnbr(int n, int fd)
 {
 	long	num;
 	int		i;
@@ -49,14 +53,14 @@ int	ft_putnbr(int n)
 	i = 0;
 	if (num < 0)
 	{
-		i += ft_putchr('-');
+		i += ft_putchr_fd('-', fd);
 		num *= -1;
 	}
 	if (num > 9)
 	{
-		i += ft_putnbr(num / 10);
-		return (i + ft_putchr(num % 10 + '0'));
+		i += ft_putnbr(num / 10, fd);
+		return (i + ft_putchr_fd(num % 10 + '0', fd));
 	}
 	else
-		return (i + ft_putchr(num + '0'));
+		return (i + ft_putchr_fd(num + '0', fd));
 }

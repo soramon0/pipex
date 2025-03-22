@@ -23,7 +23,12 @@ char	*ft_strchr(const char *s, int c)
 
 int	ft_putchr(char c)
 {
-	return (write(1, &c, 1));
+	return (write(STDOUT_FILENO, &c, 1));
+}
+
+int	ft_putchr_fd(char c, int fd)
+{
+	return (write(fd, &c, 1));
 }
 
 int	ft_putstr(char *s)
@@ -35,6 +40,11 @@ int	ft_putstr(char *s)
 	i = 0;
 	while (s[i])
 		i++;
-	write(1, s, i);
+	write(STDOUT_FILENO, s, i);
 	return (i);
+}
+
+int	ft_putstr_fd(char *str, int fd)
+{
+	return (write(fd, str, ft_strlen(str)));
 }
