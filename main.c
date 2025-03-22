@@ -15,6 +15,8 @@
 int	process_wait(int pid, int *status)
 {
 	waitpid(pid, status, 0);
+	ft_printf_fd(STDOUT_FILENO, "status = %d/%d\n", *status,
+		WEXITSTATUS(*status));
 	if (!WIFEXITED(*status) || WEXITSTATUS(*status) != EXIT_SUCCESS)
 		return (-1);
 	return (0);

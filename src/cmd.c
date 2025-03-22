@@ -14,12 +14,7 @@
 
 int	run_cmd(char *pathname, char *argv[], char *envp[])
 {
-	if (execve(pathname, argv, envp) == -1)
-	{
-		perror(pathname);
-		return (-1);
-	}
-	return (0);
+	return (execve(pathname, argv, envp));
 }
 
 int	exec_cmd(char *cmd, char *envp[])
@@ -28,11 +23,12 @@ int	exec_cmd(char *cmd, char *envp[])
 
 	cmd_argv = ft_split(cmd, ' ');
 	if (cmd_argv == NULL || cmd_argv[0] == NULL)
-		return (-1);
+		return (EXIT_FAILURE);
 	if (run_cmd(cmd_argv[0], cmd_argv, envp) == -1)
 	{
+		perror(cmd_argv[0]);
 		ft_split_free(cmd_argv);
-		return (-1);
+		return (EXIT_FAILURE);
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }

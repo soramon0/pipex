@@ -85,6 +85,7 @@ int	process_in(char *argv[], char *envp[], int pipefd[2], int *pid)
 {
 	int	fd;
 	int	pid_fallback;
+	int	status;
 
 	pid_fallback = 0;
 	if (pid == NULL)
@@ -100,19 +101,20 @@ int	process_in(char *argv[], char *envp[], int pipefd[2], int *pid)
 	fd = redirect_input_to_pipe(argv[1], O_RDONLY, pipefd);
 	if (fd == -1)
 		exit(EXIT_FAILURE);
-	if (exec_cmd(argv[2], envp) == -1)
+	status = exec_cmd(argv[3], envp);
+	if (status != 0)
 	{
 		close(pipefd[1]);
 		close(fd);
-		exit(EXIT_FAILURE);
 	}
-	exit(EXIT_SUCCESS);
+	exit(status);
 }
 
 int	process_out(char *argv[], char *envp[], int pipefd[2], int *pid)
 {
 	int	fd;
 	int	pid_fallback;
+	int	status;
 
 	pid_fallback = 0;
 	if (pid == NULL)
@@ -128,11 +130,11 @@ int	process_out(char *argv[], char *envp[], int pipefd[2], int *pid)
 	fd = redirect_pipe_to_output(argv[4], O_WRONLY | O_CREAT | O_TRUNC, pipefd);
 	if (fd == -1)
 		exit(EXIT_FAILURE);
-	if (exec_cmd(argv[3], envp) == -1)
+	status = exec_cmd(argv[3], envp);
+	if (status != 0)
 	{
 		close(pipefd[0]);
 		close(fd);
-		exit(EXIT_FAILURE);
 	}
-	exit(EXIT_SUCCESS);
+	exit(status);
 }
