@@ -101,7 +101,7 @@ int	process_in(char *argv[], char *envp[], int pipefd[2], int *pid)
 	fd = redirect_input_to_pipe(argv[1], O_RDONLY, pipefd);
 	if (fd == -1)
 		exit(EXIT_FAILURE);
-	status = exec_cmd(argv[3], envp);
+	status = exec_cmd(argv[2], envp);
 	if (status != 0)
 	{
 		close(pipefd[1]);
