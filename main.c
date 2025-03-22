@@ -12,12 +12,10 @@
 
 #include "src/pipex.h"
 
-int	group_wait(int in_pid, int out_pid, int *in_status, int *out_status)
+int	process_wait(int pid, int *status)
 {
-	waitpid(in_pid, in_status, 0);
-	waitpid(out_pid, out_status, 0);
-	if (!WIFEXITED(*in_status) || WEXITSTATUS(*in_status) != 0
-		|| !WIFEXITED(*out_status) || WEXITSTATUS(*out_status) != 0)
+	waitpid(pid, status, 0);
+	if (!WIFEXITED(*status) || WEXITSTATUS(*status) != 0)
 		return (-1);
 	return (0);
 }
@@ -42,6 +40,8 @@ int	main(int argc, char *argv[], char *envp[])
 		return (EXIT_FAILURE);
 	close(pipefd[0]);
 	close(pipefd[1]);
-	group_wait(in_pid, out_pid, &in_status, &out_status);
+	process_wait(in_pid, &in_status);
+	if (process_wait(out_pid, &out_status) != 0)
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
