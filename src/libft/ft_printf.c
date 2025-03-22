@@ -50,7 +50,7 @@ int	ft_vprintf_fd(va_list args, int fd, const char *format, ...)
 	{
 		if (*s != '%' && ++bytes)
 		{
-			ft_putchr_fd(fd, *s);
+			ft_putchr_fd(*s, fd);
 			s++;
 			continue ;
 		}
