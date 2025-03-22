@@ -24,3 +24,13 @@ void	err_exit(int status, char *fmt, ...)
 	}
 	exit(status);
 }
+
+int	process_wait(int pid)
+{
+	int	status;
+
+	waitpid(pid, &status, 0);
+	if (!WIFEXITED(status) || WEXITSTATUS(status) != EXIT_SUCCESS)
+		return (WEXITSTATUS(status));
+	return (EXIT_SUCCESS);
+}

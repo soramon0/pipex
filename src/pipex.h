@@ -22,6 +22,7 @@
 # include <unistd.h>
 
 void	err_exit(int status, char *fmt, ...);
+int		process_wait(int pid);
 int		process_in(char *argv[], char *envp[], int pipefd[2], int *pid);
 int		process_out(char *argv[], char *envp[], int pipefd[2], int *pid);
 int		exec_cmd(char *cmd, char *envp[]);
