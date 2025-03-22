@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libft.h                                            :+:      :+:    :+:   */
+/*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: klaayoun <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,19 +10,29 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#include "pipex.h"
 
-# include "libft/libft.h"
-# include <fcntl.h>
-# include <stdio.h>
-# include <sys/types.h>
-# include <sys/wait.h>
-# include <unistd.h>
+int	run_cmd(char *pathname, char *argv[], char *envp[])
+{
+	if (execve(pathname, argv, envp) == -1)
+	{
+		perror(pathname);
+		return (-1);
+	}
+	return (0);
+}
 
-void	err_exit(int status, char *fmt, ...);
-int		process_in(char *argv[], char *envp[], int pipefd[2], int *pid);
-int		process_out(char *argv[], char *envp[], int pipefd[2], int *pid);
-int		exec_cmd(char *cmd, char *envp[]);
+int	exec_cmd(char *cmd, char *envp[])
+{
+	char	**cmd_argv;
 
-#endif
+	cmd_argv = ft_split(cmd, ' ');
+	if (cmd_argv == NULL || cmd_argv[0] == NULL)
+		return (-1);
+	if (run_cmd(cmd_argv[0], cmd_argv, envp) == -1)
+	{
+		ft_split_free(cmd_argv);
+		return (-1);
+	}
+	return (0);
+}

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libft.h                                            :+:      :+:    :+:   */
+/*   utils.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: klaayoun <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,19 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#include "pipex.h"
 
-# include "libft/libft.h"
-# include <fcntl.h>
-# include <stdio.h>
-# include <sys/types.h>
-# include <sys/wait.h>
-# include <unistd.h>
+void	err_exit(int status, char *fmt, ...)
+{
+	va_list	args;
 
-void	err_exit(int status, char *fmt, ...);
-int		process_in(char *argv[], char *envp[], int pipefd[2], int *pid);
-int		process_out(char *argv[], char *envp[], int pipefd[2], int *pid);
-int		exec_cmd(char *cmd, char *envp[]);
-
-#endif
+	if (fmt != NULL)
+	{
+		va_start(args, fmt);
+		ft_vprintf_fd(args, STDERR_FILENO, fmt);
+		va_end(args);
+	}
+	exit(status);
+}
