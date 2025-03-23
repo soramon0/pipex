@@ -62,16 +62,15 @@ int	exec_cmd(char *cmd, char *envp[])
 	if (cmd_argv == NULL)
 		return (EXIT_FAILURE);
 	if (cmd_argv[0] == NULL)
-		return (ft_printf_fd(2, "%s:command '' not found.\n", cmd),
-			ft_split_free(cmd_argv), 127);
+	{
+		ft_printf_fd(2, "%s:command '' not found.\n", cmd);
+		return (ft_split_free(cmd_argv), 127);
+	}
 	bin = get_cmd_path(cmd_argv[0], path);
 	if (bin == NULL)
 		return (ft_split_free(cmd_argv), EXIT_FAILURE);
 	status = run_cmd(bin, cmd_argv, envp);
-	if (status != 0)
-	{
-		perror(cmd_argv[0]);
-		ft_split_free(cmd_argv);
-	}
+	perror(cmd_argv[0]);
+	ft_split_free(cmd_argv);
 	return (status);
 }
