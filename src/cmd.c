@@ -12,7 +12,7 @@
 
 #include "pipex.h"
 
-char *strs_search(char *haystack[], char *needle)
+char	*strs_search(char *haystack[], char *needle)
 {
 	int	i;
 	int	n;
@@ -30,12 +30,13 @@ char *strs_search(char *haystack[], char *needle)
 	return (NULL);
 }
 
-char *get_binpath(char *filename, char *path)
+char	*get_cmd_path(char *filename, char *path)
 {
 	if (path == NULL || filename == NULL)
 		return (NULL);
-	ft_printf_fd(2, path);
-	return (NULL);
+	if (ft_strlen(filename) >= 2 && filename[0] == '.' && filename[1] == '/')
+		return (filename);
+	return (filename);
 }
 
 int	run_cmd(char *bin, char *argv[], char *envp[])
@@ -50,17 +51,20 @@ int	run_cmd(char *bin, char *argv[], char *envp[])
 int	exec_cmd(char *cmd, char *envp[])
 {
 	char	**cmd_argv;
-	int		status;
 	char	*path;
 	char	*bin;
+	int		status;
 
-	path = strs_search(envp, "PATHS");
+	path = strs_search(envp, "PATH");
 	if (path == NULL)
 		return (ft_printf_fd(2, "PATH undefined\n"), EXIT_FAILURE);
 	cmd_argv = ft_split(cmd, ' ');
-	if (cmd_argv == NULL || cmd_argv[0] == NULL)
-		return (ft_split_free(cmd_argv), EXIT_FAILURE);
-	bin = get_binpath(cmd_argv[0], path);
+	if (cmd_argv == NULL)
+		return (EXIT_FAILURE);
+	if (cmd_argv[0] == NULL)
+		return (ft_printf_fd(2, "%s:command '' not found.\n", cmd),
+			ft_split_free(cmd_argv), 127);
+	bin = get_cmd_path(cmd_argv[0], path);
 	if (bin == NULL)
 		return (ft_split_free(cmd_argv), EXIT_FAILURE);
 	status = run_cmd(bin, cmd_argv, envp);
