@@ -76,8 +76,9 @@ int	exec_cmd(char *program, char *envp[])
 		ft_printf_fd(2, "%s:command '' not found.\n", program);
 		return (ft_split_free(cmd), 127);
 	}
-	if (has_path(cmd[0]) == 0 && is_executable(cmd[0]) != 0)
-		return (perror(cmd[0]), ft_split_free(cmd), is_executable(cmd[0]));
+	status = is_executable(cmd[0]);
+	if (has_path(cmd[0]) == 0 && status != 0)
+		return (perror(cmd[0]), ft_split_free(cmd), status);
 	bin = get_cmd_path(cmd[0], envp);
 	if (bin == NULL)
 		return (ft_split_free(cmd), EXIT_FAILURE);
