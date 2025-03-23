@@ -20,8 +20,8 @@ int	main(int argc, char *argv[], char *envp[])
 
 	in_pid = 0;
 	out_pid = 0;
-	if (argc < 5)
-		err_exit(EXIT_FAILURE, "usage: minimum 4 arguments\n");
+	if (argc != 5)
+		err_exit(EXIT_FAILURE, "usage: 4 arguments required\n");
 	if (pipe(pipefd) == -1)
 		err_exit(EXIT_FAILURE, "pipe");
 	if (process_in(argv, envp, pipefd, &in_pid) == -1)
