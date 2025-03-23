@@ -61,30 +61,29 @@ char	*get_cmd_path(char *filename, char *envp[])
 	return (ft_split_free(paths), ft_strdup(filename));
 }
 
-int	exec_cmd(char *cmd, char *envp[])
+int	exec_cmd(char *program, char *envp[])
 {
-	char	**cmd_argv;
+	char	**cmd;
 	char	*bin;
 
-	cmd_argv = ft_split(cmd, ' ');
-	if (cmd_argv == NULL)
+	cmd = ft_split(program, ' ');
+	if (cmd == NULL)
 		return (EXIT_FAILURE);
-	if (cmd_argv[0] == NULL)
+	if (cmd[0] == NULL)
 	{
-		ft_printf_fd(2, "%s:command '' not found.\n", cmd);
-		return (ft_split_free(cmd_argv), 127);
+		ft_printf_fd(2, "%s:command '' not found.\n", program);
+		return (ft_split_free(cmd), 127);
 	}
-	if (has_path(cmd_argv[0]) == 0 && is_executable(cmd_argv[0]) != 0)
-	{
-		perror(cmd_argv[0]);
-		return (ft_split_free(cmd_argv), is_executable(cmd_argv[0]));
-	}
-	bin = get_cmd_path(cmd_argv[0], envp);
+	if (has_path(cmd[0]) == 0 && is_executable(cmd[0]) != 0)
+		return (perror(cmd[0]), ft_split_free(cmd), is_executable(cmd[0]));
+	bin = get_cmd_path(cmd[0], envp);
 	if (bin == NULL)
-		return (ft_split_free(cmd_argv), EXIT_FAILURE);
-	execve(bin, cmd_argv, envp);
-	perror(cmd_argv[0]);
+		return (ft_split_free(cmd), EXIT_FAILURE);
+	if (is_executable(bin) != 0)
+		return (perror(cmd[0]), ft_split_free(cmd), is_executable(bin));
+	execve(bin, cmd, envp);
+	perror(cmd[0]);
 	free(bin);
-	ft_split_free(cmd_argv);
+	ft_split_free(cmd);
 	return (EXIT_FAILURE);
 }
