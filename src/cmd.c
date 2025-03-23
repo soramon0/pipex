@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft/libft.h"
 #include "pipex.h"
 
 int	is_executable(char *bin)
@@ -65,6 +66,7 @@ int	exec_cmd(char *program, char *envp[])
 {
 	char	**cmd;
 	char	*bin;
+	int		status;
 
 	cmd = ft_split(program, ' ');
 	if (cmd == NULL)
@@ -79,11 +81,9 @@ int	exec_cmd(char *program, char *envp[])
 	bin = get_cmd_path(cmd[0], envp);
 	if (bin == NULL)
 		return (ft_split_free(cmd), EXIT_FAILURE);
-	if (is_executable(bin) != 0)
-		return (perror(cmd[0]), ft_split_free(cmd), is_executable(bin));
+	status = is_executable(bin);
+	if (status != 0)
+		return (perror(cmd[0]), free(bin), ft_split_free(cmd), status);
 	execve(bin, cmd, envp);
-	perror(cmd[0]);
-	free(bin);
-	ft_split_free(cmd);
-	return (EXIT_FAILURE);
+	return (perror(cmd[0]), free(bin), ft_split_free(cmd), EXIT_FAILURE);
 }
