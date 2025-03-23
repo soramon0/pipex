@@ -47,6 +47,8 @@ size_t				ft_strlcpy(char *dst, const char *src, size_t size);
 char				*ft_substr(char const *s, unsigned int start, size_t len);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
 char				**ft_split(char const *s, char c);
+char				*ft_strjoin(char *start, char *end, char join);
+char				*ft_strsearch(char *haystack[], char *needle);
 char				**ft_split_free(char **arr);
 t_list				*ft_lstnew(void *content);
 void				ft_lstadd_front(t_list **lst, t_list *item);
