@@ -30,7 +30,9 @@ int	process_wait(int pid)
 	int	status;
 
 	waitpid(pid, &status, 0);
-	if (!WIFEXITED(status) || WEXITSTATUS(status) != EXIT_SUCCESS)
+	if (!WIFEXITED(status))
+		return (EXIT_FAILURE);
+	if (WEXITSTATUS(status) != EXIT_SUCCESS)
 		return (WEXITSTATUS(status));
 	return (EXIT_SUCCESS);
 }
